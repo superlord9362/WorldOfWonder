@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "worldofwonder:block/stem_log_top",
+        "side": "worldofwonder:block/stem_log"
+    }
+}

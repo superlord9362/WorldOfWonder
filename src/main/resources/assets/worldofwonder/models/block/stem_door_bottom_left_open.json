@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom_left_open",
+  "textures": {
+    "bottom": "worldofwonder:block/stem_door_bottom",
+    "top": "worldofwonder:block/stem_door_top"
+  }
+}

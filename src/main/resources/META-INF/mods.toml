@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="LGPL v3"
+[[mods]]
+modId="worldofwonder"
+version="${mod_version}"
+displayName="World of Wonder"
+credits="${mod_authors}"
+description='''
+World of Wonder is a mod that was made for MMD's ModJam. It contians a new biome, the Dandelion Fields.
+'''
+[[dependencies.worldofwonder]]
+    modId="forge"
+    mandatory=true
+    versionRange="${neo_version_range}" #mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.worldofwonder]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+    
