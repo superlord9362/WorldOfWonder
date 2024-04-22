@@ -58,7 +58,7 @@ public class DandeLionModel<T extends DandeLionEntity> extends EntityModel<Dande
 
 		PartDefinition earLeft = head.addOrReplaceChild("earLeft", CubeListBuilder.create().texOffs(25, 22).addBox(-1.0F, -1.0F, -0.5F, 3.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(2.5F, -3.0F, -2.5F));
 
-		PartDefinition legLeft = body.addOrReplaceChild("legLeft", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, -1.0F, -2.0F, 3.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(2.5F, 5.0F, 5.0F));
+		PartDefinition legLeft = body.addOrReplaceChild("legLeft", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(2.5F, 5.0F, 5.0F));
 
 		PartDefinition armLeft = body.addOrReplaceChild("armLeft", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-1.5F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(2.5F, 4.0F, -5.0F));
 
@@ -102,10 +102,10 @@ public class DandeLionModel<T extends DandeLionEntity> extends EntityModel<Dande
             this.body.y = Mth.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 12.02F;
             this.body.xRot = Mth.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount;
             this.head.y = Mth.cos(1.0F + limbSwing * speed * 0.4F) * degree * -0.05F * limbSwingAmount - 3.05F;
-            this.armLeft.xRot = Mth.cos(-2.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
-            this.armRight.xRot = Mth.cos(3.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
-            this.legLeft.xRot = Mth.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
-            this.legRight.xRot = Mth.cos(2.0F + limbSwing * speed * 0.4F) * degree * 1.2F * limbSwingAmount;
+            this.legRight.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.legLeft.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.armRight.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.armLeft.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
             this.tail.xRot = Mth.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 0.8F * limbSwingAmount + 0.4F;
 
             this.armLeft.yRot = 0.0F;
