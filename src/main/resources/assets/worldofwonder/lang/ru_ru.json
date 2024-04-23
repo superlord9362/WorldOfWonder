@@ -3,7 +3,7 @@
   "language.region": "Russia",
   "language.code": "ru_ru",
 
-  "itemGroup.worldofwonder": "Мир чудес",
+  "itemGroup.world_of_wonder_item_group": "Мир чудес",
 
   "block.worldofwonder.dandelion_fluff": "Одуванчик",
   "block.worldofwonder.dandelion_petals": "Лепестки одуванчика",

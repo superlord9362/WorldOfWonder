@@ -15,6 +15,7 @@ import codyhuh.worldofwonder.init.WonderEntities;
 import codyhuh.worldofwonder.init.WonderFoliagePlacers;
 import codyhuh.worldofwonder.init.WonderItems;
 import codyhuh.worldofwonder.init.WonderSounds;
+import codyhuh.worldofwonder.init.WonderTabs;
 import codyhuh.worldofwonder.init.WonderTileEntities;
 import codyhuh.worldofwonder.init.WonderWoodTypes;
 import net.minecraft.core.HolderLookup;
@@ -65,6 +66,7 @@ public class WorldOfWonder {
         WonderEntities.REGISTRY.register(bus);
         WonderTileEntities.REGISTRY.register(bus);
         WonderFoliagePlacers.REGISTRY.register(bus);
+        WonderTabs.REGISTRY.register(bus);
 
 		
 		bus.addListener(this::gatherData);

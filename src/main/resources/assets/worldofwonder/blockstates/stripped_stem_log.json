@@ -1,5 +1,7 @@
 {
     "variants": {
-        "": { "model": "worldofwonder:block/stripped_stem_log" }
+        "axis=y": { "model": "worldofwonder:block/stripped_stem_log" },
+        "axis=z": { "model": "worldofwonder:block/stripped_stem_log", "x": 90 },
+        "axis=x": { "model": "worldofwonder:block/stripped_stem_log", "x": 90, "y": 90 }
     }
 }
