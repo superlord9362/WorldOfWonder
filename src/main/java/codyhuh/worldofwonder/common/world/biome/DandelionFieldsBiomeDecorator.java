@@ -4,6 +4,7 @@ import codyhuh.worldofwonder.init.WonderEntities;
 import codyhuh.worldofwonder.init.WonderPlacedFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
@@ -16,12 +17,6 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class DandelionFieldsBiomeDecorator {
-
-	@SuppressWarnings("unused")
-	private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder biomeBuilder)
-	{
-		return biome(precipitation, temperature, downfall, spawnBuilder, biomeBuilder);
-	}
 
 	private static Biome biome(boolean hasPrecipitation, float temperature, float downfall, MobSpawnSettings.Builder spawnBuilder, BiomeGenerationSettings.Builder biomeBuilder)
 	{
@@ -49,6 +44,7 @@ public class DandelionFieldsBiomeDecorator {
 		BiomeDefaultFeatures.addDefaultOres(biomeFeatures);
 		BiomeDefaultFeatures.addDefaultSoftDisks(biomeFeatures);
 		BiomeDefaultFeatures.addDefaultFlowers(biomeFeatures);
+		biomeFeatures.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, VegetationPlacements.PATCH_GRASS_FOREST);
 		BiomeDefaultFeatures.addDefaultMushrooms(biomeFeatures);
 		BiomeDefaultFeatures.addDefaultExtraVegetation(biomeFeatures);
 		addDandelionFieldsVegetation(biomeFeatures);
