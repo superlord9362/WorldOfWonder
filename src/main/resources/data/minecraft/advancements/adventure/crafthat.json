@@ -5,10 +5,10 @@
       "item": "worldofwonder:dandelion_hat"
     },
     "title": {
-      "translate": "Riding on the Spring Breeze"
+      "translate": "advancements.adventure.crafthat.title"
     },
     "description": {
-      "translate": "Craft a Dandelion Hat to gently float to the ground!"
+      "translate": "advancements.adventure.crafthat.description"
     },
     "frame": "task",
     "show_toast": true,
