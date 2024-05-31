@@ -5,6 +5,9 @@
 
   "itemGroup.world_of_wonder_item_group": "World of Wonder",
 
+  "advancements.adventure.crafthat.title": "Riding on the Spring Breeze",
+  "advancements.adventure.crafthat.description": "Craft a Dandelion Hat to gently float to the ground!",
+
   "block.worldofwonder.dandelion_fluff": "Dandelion Fluff",
   "block.worldofwonder.dandelion_petals": "Dandelion Petals",
   "block.worldofwonder.stem_log": "Dandelion Stem",
@@ -34,8 +37,8 @@
   "item.worldofwonder.dandelion_hat": "Dandelion Hat",
   "item.worldofwonder.stem_boat": "Stem Boat",
   "item.worldofwonder.stem_chest_boat": "Stem Chest Boat",
-  "entity.worldofwonder.stem_chest_boat": "Boat with Chest",
 
+  "entity.worldofwonder.stem_chest_boat": "Boat with Chest",
   "entity.worldofwonder.dande_lion": "Dande-lion",
 
   "biome.worldofwonder.dandelion_fields": "Dandelion Fields"
