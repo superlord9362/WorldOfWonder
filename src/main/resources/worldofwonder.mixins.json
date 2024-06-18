@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "codyhuh.worldofwonder.init.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "refmap": "worldofwonder.refmap.json",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
