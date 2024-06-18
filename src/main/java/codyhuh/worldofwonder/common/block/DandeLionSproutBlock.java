@@ -3,7 +3,7 @@ package codyhuh.worldofwonder.common.block;
 import javax.annotation.Nullable;
 
 import codyhuh.worldofwonder.common.tileentity.DandeLionSproutTileEntity;
-import codyhuh.worldofwonder.init.WonderTileEntities;
+import codyhuh.worldofwonder.core.WonderTileEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

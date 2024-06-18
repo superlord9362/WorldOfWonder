@@ -1,6 +1,6 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.init.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

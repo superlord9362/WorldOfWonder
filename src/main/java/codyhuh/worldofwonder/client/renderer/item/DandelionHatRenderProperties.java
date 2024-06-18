@@ -2,7 +2,7 @@ package codyhuh.worldofwonder.client.renderer.item;
 
 import codyhuh.worldofwonder.client.ClientEvents;
 import codyhuh.worldofwonder.client.renderer.entity.model.DandelionHatModel;
-import codyhuh.worldofwonder.init.WonderItems;
+import codyhuh.worldofwonder.core.WonderItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;

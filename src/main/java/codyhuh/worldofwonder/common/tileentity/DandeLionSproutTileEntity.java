@@ -3,8 +3,8 @@ package codyhuh.worldofwonder.common.tileentity;
 import java.util.Objects;
 
 import codyhuh.worldofwonder.common.entity.DandeLionEntity;
-import codyhuh.worldofwonder.init.WonderEntities;
-import codyhuh.worldofwonder.init.WonderTileEntities;
+import codyhuh.worldofwonder.core.WonderEntities;
+import codyhuh.worldofwonder.core.WonderTileEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;

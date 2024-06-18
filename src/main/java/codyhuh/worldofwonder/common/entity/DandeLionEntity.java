@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.init.WonderBlocks;
-import codyhuh.worldofwonder.init.WonderEntities;
-import codyhuh.worldofwonder.init.WonderSounds;
+import codyhuh.worldofwonder.core.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderEntities;
+import codyhuh.worldofwonder.core.WonderSounds;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

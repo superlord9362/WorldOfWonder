@@ -1,4 +1,4 @@
-package codyhuh.worldofwonder.init;
+package codyhuh.worldofwonder.core;
 
 import codyhuh.worldofwonder.WorldOfWonder;
 import codyhuh.worldofwonder.common.entity.DandeLionEntity;

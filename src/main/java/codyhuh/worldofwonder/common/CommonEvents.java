@@ -3,7 +3,7 @@ package codyhuh.worldofwonder.common;
 import com.google.common.collect.ImmutableMap;
 
 import codyhuh.worldofwonder.WorldOfWonder;
-import codyhuh.worldofwonder.init.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderBlocks;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
