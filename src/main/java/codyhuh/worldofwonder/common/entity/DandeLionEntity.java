@@ -1,8 +1,10 @@
 package codyhuh.worldofwonder.common.entity;
 
+import codyhuh.worldofwonder.common.block.DandeLionSproutBlock;
 import codyhuh.worldofwonder.core.WonderBlocks;
 import codyhuh.worldofwonder.core.WonderEntities;
 import codyhuh.worldofwonder.core.WonderSounds;
+import codyhuh.worldofwonder.core.other.WonderItemTags;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -49,15 +52,15 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -121,9 +124,7 @@ public class DandeLionEntity extends TamableAnimal {
         this.setAngry(compound.getBoolean("Angry"));
     }
 
-    @SuppressWarnings("resource")
-	@Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public InteractionResult mobbInteract(Player player, InteractionHand hand) {
         if (!this.level().isClientSide) {
             ItemStack stack = player.getItemInHand(hand);
             Item item = stack.getItem();
@@ -152,7 +153,7 @@ public class DandeLionEntity extends TamableAnimal {
                 return InteractionResult.SUCCESS;
             }
 
-            if (!isSheared() && item == Items.SHEARS) {
+            if (!isSheared() && stack.is(Tags.Items.SHEARS)) {
                 shear();
                 this.playSound(SoundEvents.SHEEP_SHEAR, getSoundVolume(), 1);
                 spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF.get(), random.nextInt(2) + 1));
@@ -160,7 +161,7 @@ public class DandeLionEntity extends TamableAnimal {
             }
 
             if (this.isTame()) {
-                if (item == Items.BONE_MEAL && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
+                if (item == Items.BONE_MEAL && (getHealth() < getMaxHealth() || !isSheared())) {
                     if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
@@ -179,6 +180,7 @@ public class DandeLionEntity extends TamableAnimal {
                     this.jumping = false;
                     this.navigation.stop();
                     this.setTarget(null);
+                    return InteractionResult.SUCCESS;
                 }
             } else if (stack.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
                 if (!player.getAbilities().instabuild) {
@@ -219,6 +221,106 @@ public class DandeLionEntity extends TamableAnimal {
         return InteractionResult.PASS;
     }
 
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (this.level().isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame() || stack.is(ItemTags.SMALL_FLOWERS)
+                    || stack.is(Tags.Items.SHEARS) && !this.isTame() && !this.isAngry();
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else {
+            if (!isSheared() && stack.is(Tags.Items.SHEARS)) {
+                shear();
+                this.playSound(SoundEvents.SHEEP_SHEAR, getSoundVolume(), 1);
+                spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF.get(), random.nextInt(2) + 1));
+                return InteractionResult.SUCCESS;
+            }
+            if (stack.getItem() instanceof SpawnEggItem egg && egg.spawnsEntity(stack.getTag(), this.getType())) {
+                BlockState state = level().getBlockState(blockPosition());
+
+                return InteractionResult.SUCCESS;
+            }
+            if (this.isTame()) {
+                if (this.isFood(stack) && this.getHealth() < this.getMaxHealth()) {
+                    // heal it if it's food
+                    this.heal(4);
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
+                    this.gameEvent(GameEvent.EAT, this);
+                    return InteractionResult.SUCCESS;
+                } else {
+                    if (stack.is(WonderItemTags.FERTILIZER) && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
+                        if (!player.getAbilities().instabuild) {
+                            stack.shrink(1);
+                        }
+                        if (level() instanceof ServerLevel server) {
+                            for (int i = 0; i < 5; ++i) {
+                                RandomSource random = level().getRandom();
+                                server.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getEyePosition().x + random.nextGaussian() * 0.25,
+                                        this.getEyeY() + (random.nextGaussian() * 0.25) - 0.15, this.getEyePosition().z + random.nextGaussian() * 0.25,
+                                        1, 0.0D, 0.0D, 0.0D, 1.0D);
+                            }
+                        }
+                        this.heal(4);
+                        if (shearedTicks > 0) {
+                            shearedTicks -= 3000;
+                            if (shearedTicks < 0) {
+                                shearedTicks = 0;
+                                setSheared(false);
+                            }
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                    if (this.isFood(stack)) {
+                        if (this.getAge() == 0 && this.canFallInLove()) {
+                            if (flowersAround()) {
+                                this.usePlayerItem(player, hand, stack);
+                                this.setInLove(player);
+                                player.swing(hand, true);
+                            } else {
+                                level().broadcastEntityEvent(this, (byte) 5);
+                            }
+                            return InteractionResult.SUCCESS;
+                        }
+                        if (this.isBaby()) {
+                            this.usePlayerItem(player, hand, stack);
+                            this.ageUp((int) (this.getAge() / -20.0 * 0.1), true);
+                            return InteractionResult.SUCCESS;
+                        }
+                    }
+                    InteractionResult interactionresult = super.mobInteract(player, hand);
+                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                        this.setOrderedToSit(!this.isOrderedToSit());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        this.setTarget((LivingEntity) null);
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        return interactionresult;
+                    }
+                }
+            } else if (stack.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+
+                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+                    this.tame(player);
+                    this.navigation.stop();
+                    this.setTarget((LivingEntity) null);
+                    this.setOrderedToSit(true);
+                    this.level().broadcastEntityEvent(this, (byte) 7);
+                } else {
+                    this.level().broadcastEntityEvent(this, (byte) 6);
+                }
+
+                return InteractionResult.SUCCESS;
+            } else {
+                return super.mobInteract(player, hand);
+            }
+        }
+    }
+
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 5) {
@@ -239,10 +341,9 @@ public class DandeLionEntity extends TamableAnimal {
     }
 
     @Override
-    public boolean canMate(Animal otherAnimal) {
-        if (otherAnimal != this && this.isTame() && otherAnimal instanceof DandeLionEntity) {
-            DandeLionEntity dandeLion = (DandeLionEntity) otherAnimal;
-            return dandeLion.isTame() && !dandeLion.isInSittingPose() && this.isInLove() && dandeLion.isInLove();
+    public boolean canMate(@NotNull Animal otherAnimal) {
+        if (otherAnimal != this && this.isTame() && otherAnimal instanceof DandeLionEntity lion) {
+            return lion.isTame() && !lion.isInSittingPose() && this.isInLove() && lion.isInLove();
         }
         return false;
     }
@@ -396,9 +497,8 @@ public class DandeLionEntity extends TamableAnimal {
         if (target instanceof Creeper || target instanceof Ghast) {
             return false;
         } else {
-            if (target instanceof DandeLionEntity) {
-                DandeLionEntity dandeLion = (DandeLionEntity) target;
-                return !dandeLion.isTame() || dandeLion.getOwner() != owner;
+            if (target instanceof DandeLionEntity lion) {
+                return !lion.isTame() || lion.getOwner() != owner;
             } else if (target instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) target)) {
                 return false;
             } else if (target instanceof AbstractHorse && ((AbstractHorse) target).isTamed()) {

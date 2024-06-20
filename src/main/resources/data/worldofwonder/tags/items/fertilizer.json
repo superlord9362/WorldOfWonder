@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:bone_meal",
+    "worldofwonder:bloom_meal",
+    {
+      "id": "create:tree_fertilizer",
+      "required": false
+    }
+  ]
+}
