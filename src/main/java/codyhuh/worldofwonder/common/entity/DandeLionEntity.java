@@ -1,6 +1,5 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.common.block.DandeLionSproutBlock;
 import codyhuh.worldofwonder.core.WonderBlocks;
 import codyhuh.worldofwonder.core.WonderEntities;
 import codyhuh.worldofwonder.core.WonderSounds;
@@ -235,8 +234,19 @@ public class DandeLionEntity extends TamableAnimal {
                 return InteractionResult.SUCCESS;
             }
             if (stack.getItem() instanceof SpawnEggItem egg && egg.spawnsEntity(stack.getTag(), this.getType())) {
-                BlockState state = level().getBlockState(blockPosition());
-
+                BlockState sprout = WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState();
+                if (sprout.canSurvive(level(), blockPosition())
+                && level().getBlockState(blockPosition().above()).canBeReplaced()) {
+                    level().setBlock(blockPosition(), sprout, 3);
+                } else {
+                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
+                    if (seed != null) {
+                        double rotation = Math.toRadians(random.nextInt(360));
+                        seed.setPos(getX(), getY(), getZ());
+                        seed.setTarget(getX() + Math.sin(rotation) * 16.0, getZ() + Math.cos(-rotation) * 16.0);
+                        level().addFreshEntity(seed);
+                    }
+                }
                 return InteractionResult.SUCCESS;
             }
             if (this.isTame()) {
