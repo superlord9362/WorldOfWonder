@@ -24,13 +24,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
@@ -62,6 +56,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 public class DandeLionEntity extends TamableAnimal {
@@ -123,103 +118,6 @@ public class DandeLionEntity extends TamableAnimal {
         this.setAngry(compound.getBoolean("Angry"));
     }
 
-    public InteractionResult mobbInteract(Player player, InteractionHand hand) {
-        if (!this.level().isClientSide) {
-            ItemStack stack = player.getItemInHand(hand);
-            Item item = stack.getItem();
-
-            if (item instanceof SpawnEggItem && ((SpawnEggItem) item).spawnsEntity(stack.getTag(), this.getType())) {
-                DandeLionEntity child = WonderEntities.DANDE_LION.get().create(this.level());
-                if (child != null) {
-                    UUID id = getOwnerUUID();
-                    if (id != null) {
-                        child.setOwnerUUID(id);
-                        child.setTame(true);
-                    }
-                    child.setAge(-24000);
-                    child.setPos(this.getX(), this.getY(), this.getZ());
-                    this.level().addFreshEntity(child);
-                    if (stack.hasCustomHoverName()) {
-                        child.setCustomName(stack.getDisplayName());
-                    }
-
-                    this.onOffspringSpawnedFromEgg(player, child);
-                    if (!player.getAbilities().instabuild) {
-                        stack.shrink(1);
-                    }
-                }
-
-                return InteractionResult.SUCCESS;
-            }
-
-            if (!isSheared() && stack.is(Tags.Items.SHEARS)) {
-                shear();
-                this.playSound(SoundEvents.SHEEP_SHEAR, getSoundVolume(), 1);
-                spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF.get(), random.nextInt(2) + 1));
-                return InteractionResult.SUCCESS;
-            }
-
-            if (this.isTame()) {
-                if (item == Items.BONE_MEAL && (getHealth() < getMaxHealth() || !isSheared())) {
-                    if (!player.getAbilities().instabuild) {
-                        stack.shrink(1);
-                    }
-
-                    this.heal(4);
-                    if (shearedTicks > 0) {
-                        shearedTicks -= 3000;
-                        if (shearedTicks < 0) {
-                            shearedTicks = 0;
-                            setSheared(false);
-                        }
-                    }
-                    return InteractionResult.SUCCESS;
-                } else if (this.isOwnedBy(player) && !this.isFood(stack)) {
-                    this.setOrderedToSit(!this.isInSittingPose());
-                    this.jumping = false;
-                    this.navigation.stop();
-                    this.setTarget(null);
-                    return InteractionResult.SUCCESS;
-                }
-            } else if (stack.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
-
-                if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
-                    this.tame(player);
-                    this.navigation.stop();
-                    this.setTarget(null);
-                    this.setOrderedToSit(true);
-                    this.level().broadcastEntityEvent(this, (byte) 7);
-                } else {
-                    this.level().broadcastEntityEvent(this, (byte) 6);
-                }
-
-                return InteractionResult.SUCCESS;
-            }
-            if (this.isFood(stack)) {
-                if (this.getAge() == 0 && this.canFallInLove()) {
-                    if (flowersAround()) {
-                        this.usePlayerItem(player, hand, stack);
-                        this.setInLove(player);
-                        player.swing(hand, true);
-                    } else {
-                        level().broadcastEntityEvent(this, (byte) 5);
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-
-                if (this.isBaby()) {
-                    this.usePlayerItem(player, hand, stack);
-                    this.ageUp((int) (this.getAge() / -20.0 * 0.1), true);
-                    return InteractionResult.SUCCESS;
-                }
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
     public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (this.level().isClientSide) {
@@ -235,8 +133,8 @@ public class DandeLionEntity extends TamableAnimal {
             }
             if (stack.getItem() instanceof SpawnEggItem egg && egg.spawnsEntity(stack.getTag(), this.getType())) {
                 BlockState sprout = WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState();
-                if (sprout.canSurvive(level(), blockPosition())
-                && level().getBlockState(blockPosition().above()).canBeReplaced()) {
+                if (sprout.canSurvive(level(), blockPosition().below())
+                && level().getBlockState(blockPosition()).canBeReplaced()) {
                     level().setBlock(blockPosition(), sprout, 3);
                 } else {
                     DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
@@ -334,11 +232,11 @@ public class DandeLionEntity extends TamableAnimal {
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 5) {
-            for (int i = 0; i <= 6; ++i) {
+            for (int i = 0; i <= 3; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         } else {
             super.handleEntityEvent(id);
