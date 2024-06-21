@@ -180,6 +180,7 @@ public class DandeLionEntity extends TamableAnimal {
                         if (level() instanceof ServerLevel server) {
                             for (int i = 0; i < 5; ++i) {
                                 RandomSource random = level().getRandom();
+                                playSound(SoundEvents.BONE_MEAL_USE);
                                 server.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getEyePosition().x + random.nextGaussian() * 0.25,
                                         this.getEyeY() + (random.nextGaussian() * 0.25) - 0.15, this.getEyePosition().z + random.nextGaussian() * 0.25,
                                         1, 0.0D, 0.0D, 0.0D, 1.0D);
