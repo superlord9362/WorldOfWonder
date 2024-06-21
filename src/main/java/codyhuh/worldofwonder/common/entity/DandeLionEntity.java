@@ -4,9 +4,11 @@ import codyhuh.worldofwonder.core.WonderBlocks;
 import codyhuh.worldofwonder.core.WonderEntities;
 import codyhuh.worldofwonder.core.WonderSounds;
 import codyhuh.worldofwonder.core.other.WonderItemTags;
+import com.davigj.just_dandy.core.registry.JDParticleTypes;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,6 +21,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -51,8 +54,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -133,15 +138,26 @@ public class DandeLionEntity extends TamableAnimal {
             }
             if (stack.getItem() instanceof SpawnEggItem egg && egg.spawnsEntity(stack.getTag(), this.getType())) {
                 BlockState sprout = WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState();
-                if (sprout.canSurvive(level(), blockPosition().below())
+                if (sprout.canSurvive(level(), blockPosition())
                 && level().getBlockState(blockPosition()).canBeReplaced()) {
                     level().setBlock(blockPosition(), sprout, 3);
+                    ParticleOptions particle = ParticleTypes.WAX_OFF;
+                    if (ModList.get().isLoaded("just_dandy")) {
+                        particle = JDParticleTypes.DANDELION_FLUFF.get();
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        ((ServerLevel)level()).sendParticles(particle, blockPosition().getX() + random.nextGaussian() * 0.2,
+                                getEyeY() + random.nextGaussian() * 0.5, blockPosition().getZ() + random.nextGaussian() * 0.2,
+                                1,0, 0, 0, 1);
+                    }
                 } else {
                     DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
-                        double rotation = Math.toRadians(random.nextInt(360));
+                        double rotation = random.nextInt(360);
                         seed.setPos(getX(), getY(), getZ());
-                        seed.setTarget(getX() + Math.sin(rotation) * 16.0, getZ() + Math.cos(-rotation) * 16.0);
+                        Vec3 target = seed.position().add(new Vec3(Mth.cos((float)Math.toRadians(rotation)), 0, Mth.sin((float)Math.toRadians(rotation))).scale(16));
+                        seed.setTarget(target.x, target.z);
+                        resetLove();
                         level().addFreshEntity(seed);
                     }
                 }
@@ -350,7 +366,7 @@ public class DandeLionEntity extends TamableAnimal {
                 for (int i = 0; i < random.nextInt(2) + 3; i++) {
                     DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
-                        double rotation = Math.toRadians(random.nextInt(360));
+                        double rotation = Math.toRadians(level().random.nextInt(360));
                         seed.setPos(getX(), getY(), getZ());
                         seed.setTarget(getX() + Math.sin(rotation) * 16.0, getZ() + Math.cos(-rotation) * 16.0);
                         level().addFreshEntity(seed);
