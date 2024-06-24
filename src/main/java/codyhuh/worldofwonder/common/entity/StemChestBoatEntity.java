@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.common.entity;
 
 import codyhuh.worldofwonder.common.entity.StemBoatEntity.WonderBoatTypes;
-import codyhuh.worldofwonder.init.WonderEntities;
-import codyhuh.worldofwonder.init.WonderItems;
+import codyhuh.worldofwonder.core.WonderEntities;
+import codyhuh.worldofwonder.core.WonderItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;

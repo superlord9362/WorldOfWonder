@@ -3,8 +3,8 @@ package codyhuh.worldofwonder.common.events;
 import codyhuh.worldofwonder.WorldOfWonder;
 import codyhuh.worldofwonder.common.block.trees.DandelionFluffTree;
 import codyhuh.worldofwonder.common.block.trees.DandelionTree;
-import codyhuh.worldofwonder.init.WonderBlocks;
-import codyhuh.worldofwonder.init.WonderItems;
+import codyhuh.worldofwonder.core.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -12,6 +12,7 @@ import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +28,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = WorldOfWonder.MOD_ID)
 public class ItemEvents {
     public static final DispenseItemBehavior BLOOM_MEAL_DISPENSE = new BloomMealDispenseBehavior();
@@ -49,10 +51,10 @@ public class ItemEvents {
 			event.setCancellationResult(InteractionResult.SUCCESS);
 			event.setCanceled(true);
 		}
-        handleBloomMeal(level, stack, pos, event.getEntity());
+        handleBloomMeal(level, stack, pos, event.getEntity(), event.getHand());
     }
 
-    public static boolean handleBloomMeal(Level level, ItemStack stack, BlockPos pos, Player player) {
+    public static boolean handleBloomMeal(Level level, ItemStack stack, BlockPos pos, Player player, InteractionHand hand) {
         BlockState state = level.getBlockState(pos);
         if (stack.getItem() == WonderItems.BLOOM_MEAL.get() && state.getBlock() == Blocks.DANDELION) {
             if (!level.isClientSide) {
@@ -63,6 +65,10 @@ public class ItemEvents {
                     (random.nextInt(4) == 0 ? FLUFF_TREE : DANDELION_TREE).growTree((ServerLevel) level, ((ServerLevel) level).getChunkSource().getGenerator(), pos, state, random);
                 }
                 return true;
+            } else {
+                if (hand != null) {
+                    player.swing(hand);
+                }
             }
         }
         return false;
@@ -75,7 +81,7 @@ public class ItemEvents {
             ServerLevel level = source.getLevel();
             BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             if (!level.isClientSide) {
-                if (!handleBloomMeal(level, stack, blockpos, FakePlayerFactory.getMinecraft(level))) {
+                if (!handleBloomMeal(level, stack, blockpos, FakePlayerFactory.getMinecraft(level), null)) {
                     this.setSuccess(false);
                 } else {
                     level.levelEvent(2005, blockpos, 0);

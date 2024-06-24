@@ -2,7 +2,7 @@ package codyhuh.worldofwonder.common.block;
 
 import javax.annotation.Nullable;
 
-import codyhuh.worldofwonder.init.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

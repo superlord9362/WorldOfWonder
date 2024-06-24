@@ -3,9 +3,9 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import codyhuh.worldofwonder.WorldOfWonder;
-import codyhuh.worldofwonder.init.WonderBiomes;
-import codyhuh.worldofwonder.init.WonderFeatures;
-import codyhuh.worldofwonder.init.WonderPlacedFeatures;
+import codyhuh.worldofwonder.core.WonderBiomes;
+import codyhuh.worldofwonder.core.WonderFeatures;
+import codyhuh.worldofwonder.core.WonderPlacedFeatures;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;

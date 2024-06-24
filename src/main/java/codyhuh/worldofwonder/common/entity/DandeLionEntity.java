@@ -1,11 +1,14 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.init.WonderBlocks;
-import codyhuh.worldofwonder.init.WonderEntities;
-import codyhuh.worldofwonder.init.WonderSounds;
+import codyhuh.worldofwonder.core.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderEntities;
+import codyhuh.worldofwonder.core.WonderSounds;
+import codyhuh.worldofwonder.core.other.WonderItemTags;
+import com.davigj.just_dandy.core.registry.JDParticleTypes;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,17 +21,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
@@ -49,17 +48,20 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.ModList;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 public class DandeLionEntity extends TamableAnimal {
@@ -121,64 +123,106 @@ public class DandeLionEntity extends TamableAnimal {
         this.setAngry(compound.getBoolean("Angry"));
     }
 
-    @SuppressWarnings("resource")
-	@Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!this.level().isClientSide) {
-            ItemStack stack = player.getItemInHand(hand);
-            Item item = stack.getItem();
-
-            if (item instanceof SpawnEggItem && ((SpawnEggItem) item).spawnsEntity(stack.getTag(), this.getType())) {
-                DandeLionEntity child = WonderEntities.DANDE_LION.get().create(this.level());
-                if (child != null) {
-                    UUID id = getOwnerUUID();
-                    if (id != null) {
-                        child.setOwnerUUID(id);
-                        child.setTame(true);
-                    }
-                    child.setAge(-24000);
-                    child.setPos(this.getX(), this.getY(), this.getZ());
-                    this.level().addFreshEntity(child);
-                    if (stack.hasCustomHoverName()) {
-                        child.setCustomName(stack.getDisplayName());
-                    }
-
-                    this.onOffspringSpawnedFromEgg(player, child);
-                    if (!player.getAbilities().instabuild) {
-                        stack.shrink(1);
-                    }
-                }
-
-                return InteractionResult.SUCCESS;
-            }
-
-            if (!isSheared() && item == Items.SHEARS) {
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (this.level().isClientSide) {
+            boolean flag = this.isOwnedBy(player) || this.isTame() || stack.is(ItemTags.SMALL_FLOWERS)
+                    || stack.is(Tags.Items.SHEARS) && !this.isTame() && !this.isAngry();
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else {
+            if (!isSheared() && stack.is(Tags.Items.SHEARS)) {
                 shear();
                 this.playSound(SoundEvents.SHEEP_SHEAR, getSoundVolume(), 1);
                 spawnAtLocation(new ItemStack(WonderBlocks.DANDELION_FLUFF.get(), random.nextInt(2) + 1));
                 return InteractionResult.SUCCESS;
             }
-
+            if (stack.getItem() instanceof SpawnEggItem egg && egg.spawnsEntity(stack.getTag(), this.getType())) {
+                BlockState sprout = WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState();
+                if (sprout.canSurvive(level(), blockPosition())
+                && level().getBlockState(blockPosition()).canBeReplaced()) {
+                    level().setBlock(blockPosition(), sprout, 3);
+                    ParticleOptions particle = ParticleTypes.WAX_OFF;
+                    if (ModList.get().isLoaded("just_dandy")) {
+                        particle = JDParticleTypes.DANDELION_FLUFF.get();
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        ((ServerLevel)level()).sendParticles(particle, blockPosition().getX() + random.nextGaussian() * 0.2,
+                                getEyeY() + random.nextGaussian() * 0.5, blockPosition().getZ() + random.nextGaussian() * 0.2,
+                                1,0, 0, 0, 1);
+                    }
+                } else {
+                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
+                    if (seed != null) {
+                        double rotation = random.nextInt(360);
+                        seed.setPos(getX(), getY(), getZ());
+                        Vec3 target = seed.position().add(new Vec3(Mth.cos((float)Math.toRadians(rotation)), 0, Mth.sin((float)Math.toRadians(rotation))).scale(16));
+                        seed.setTarget(target.x, target.z);
+                        resetLove();
+                        level().addFreshEntity(seed);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
             if (this.isTame()) {
-                if (item == Items.BONE_MEAL && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
+                if (this.isFood(stack) && this.getHealth() < this.getMaxHealth()) {
+                    // heal it if it's food
+                    this.heal(4);
                     if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
-
-                    this.heal(4);
-                    if (shearedTicks > 0) {
-                        shearedTicks -= 3000;
-                        if (shearedTicks < 0) {
-                            shearedTicks = 0;
-                            setSheared(false);
+                    this.gameEvent(GameEvent.EAT, this);
+                    return InteractionResult.SUCCESS;
+                } else {
+                    if (stack.is(WonderItemTags.FERTILIZER) && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
+                        if (!player.getAbilities().instabuild) {
+                            stack.shrink(1);
+                        }
+                        if (level() instanceof ServerLevel server) {
+                            for (int i = 0; i < 5; ++i) {
+                                RandomSource random = level().getRandom();
+                                playSound(SoundEvents.BONE_MEAL_USE);
+                                server.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getEyePosition().x + random.nextGaussian() * 0.25,
+                                        this.getEyeY() + (random.nextGaussian() * 0.25) - 0.15, this.getEyePosition().z + random.nextGaussian() * 0.25,
+                                        1, 0.0D, 0.0D, 0.0D, 1.0D);
+                            }
+                        }
+                        this.heal(4);
+                        if (shearedTicks > 0) {
+                            shearedTicks -= 3000;
+                            if (shearedTicks < 0) {
+                                shearedTicks = 0;
+                                setSheared(false);
+                            }
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                    if (this.isFood(stack)) {
+                        if (this.getAge() == 0 && this.canFallInLove()) {
+                            if (flowersAround()) {
+                                this.usePlayerItem(player, hand, stack);
+                                this.setInLove(player);
+                                player.swing(hand, true);
+                            } else {
+                                level().broadcastEntityEvent(this, (byte) 5);
+                            }
+                            return InteractionResult.SUCCESS;
+                        }
+                        if (this.isBaby()) {
+                            this.usePlayerItem(player, hand, stack);
+                            this.ageUp((int) (this.getAge() / -20.0 * 0.1), true);
+                            return InteractionResult.SUCCESS;
                         }
                     }
-                    return InteractionResult.SUCCESS;
-                } else if (this.isOwnedBy(player) && !this.isFood(stack)) {
-                    this.setOrderedToSit(!this.isInSittingPose());
-                    this.jumping = false;
-                    this.navigation.stop();
-                    this.setTarget(null);
+                    InteractionResult interactionresult = super.mobInteract(player, hand);
+                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
+                        this.setOrderedToSit(!this.isOrderedToSit());
+                        this.jumping = false;
+                        this.navigation.stop();
+                        this.setTarget((LivingEntity) null);
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        return interactionresult;
+                    }
                 }
             } else if (stack.is(ItemTags.SMALL_FLOWERS) && !this.isAngry()) {
                 if (!player.getAbilities().instabuild) {
@@ -188,7 +232,7 @@ public class DandeLionEntity extends TamableAnimal {
                 if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
                     this.tame(player);
                     this.navigation.stop();
-                    this.setTarget(null);
+                    this.setTarget((LivingEntity) null);
                     this.setOrderedToSit(true);
                     this.level().broadcastEntityEvent(this, (byte) 7);
                 } else {
@@ -196,37 +240,20 @@ public class DandeLionEntity extends TamableAnimal {
                 }
 
                 return InteractionResult.SUCCESS;
-            }
-            if (this.isFood(stack)) {
-                if (this.getAge() == 0 && this.canFallInLove()) {
-                    if (flowersAround()) {
-                        this.usePlayerItem(player, hand, stack);
-                        this.setInLove(player);
-                        player.swing(hand, true);
-                    } else {
-                        level().broadcastEntityEvent(this, (byte) 5);
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-
-                if (this.isBaby()) {
-                    this.usePlayerItem(player, hand, stack);
-                    this.ageUp((int) (this.getAge() / -20.0 * 0.1), true);
-                    return InteractionResult.SUCCESS;
-                }
+            } else {
+                return super.mobInteract(player, hand);
             }
         }
-        return InteractionResult.PASS;
     }
 
     @Override
     public void handleEntityEvent(byte id) {
         if (id == 5) {
-            for (int i = 0; i <= 6; ++i) {
+            for (int i = 0; i <= 3; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         } else {
             super.handleEntityEvent(id);
@@ -239,10 +266,9 @@ public class DandeLionEntity extends TamableAnimal {
     }
 
     @Override
-    public boolean canMate(Animal otherAnimal) {
-        if (otherAnimal != this && this.isTame() && otherAnimal instanceof DandeLionEntity) {
-            DandeLionEntity dandeLion = (DandeLionEntity) otherAnimal;
-            return dandeLion.isTame() && !dandeLion.isInSittingPose() && this.isInLove() && dandeLion.isInLove();
+    public boolean canMate(@NotNull Animal otherAnimal) {
+        if (otherAnimal != this && this.isTame() && otherAnimal instanceof DandeLionEntity lion) {
+            return lion.isTame() && !lion.isInSittingPose() && this.isInLove() && lion.isInLove();
         }
         return false;
     }
@@ -341,7 +367,7 @@ public class DandeLionEntity extends TamableAnimal {
                 for (int i = 0; i < random.nextInt(2) + 3; i++) {
                     DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
-                        double rotation = Math.toRadians(random.nextInt(360));
+                        double rotation = Math.toRadians(level().random.nextInt(360));
                         seed.setPos(getX(), getY(), getZ());
                         seed.setTarget(getX() + Math.sin(rotation) * 16.0, getZ() + Math.cos(-rotation) * 16.0);
                         level().addFreshEntity(seed);
@@ -396,9 +422,8 @@ public class DandeLionEntity extends TamableAnimal {
         if (target instanceof Creeper || target instanceof Ghast) {
             return false;
         } else {
-            if (target instanceof DandeLionEntity) {
-                DandeLionEntity dandeLion = (DandeLionEntity) target;
-                return !dandeLion.isTame() || dandeLion.getOwner() != owner;
+            if (target instanceof DandeLionEntity lion) {
+                return !lion.isTame() || lion.getOwner() != owner;
             } else if (target instanceof Player && owner instanceof Player && !((Player) owner).canHarmPlayer((Player) target)) {
                 return false;
             } else if (target instanceof AbstractHorse && ((AbstractHorse) target).isTamed()) {

@@ -3,7 +3,7 @@ package codyhuh.worldofwonder.common.world.gen.foliage;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import codyhuh.worldofwonder.init.WonderFoliagePlacers;
+import codyhuh.worldofwonder.core.WonderFoliagePlacers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;

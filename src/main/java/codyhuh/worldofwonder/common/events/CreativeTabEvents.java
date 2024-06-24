@@ -2,9 +2,9 @@ package codyhuh.worldofwonder.common.events;
 
 import codyhuh.worldofwonder.WorldOfWonder;
 import codyhuh.worldofwonder.common.compat.WonderQuarkCompat;
-import codyhuh.worldofwonder.init.WonderBlocks;
-import codyhuh.worldofwonder.init.WonderItems;
-import codyhuh.worldofwonder.init.WonderTabs;
+import codyhuh.worldofwonder.core.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderItems;
+import codyhuh.worldofwonder.core.WonderTabs;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;

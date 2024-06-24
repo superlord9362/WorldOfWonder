@@ -1,9 +1,9 @@
 package codyhuh.worldofwonder.common.compat;
 
 import codyhuh.worldofwonder.common.events.ItemEvents;
-import codyhuh.worldofwonder.init.WonderBlocks;
-import codyhuh.worldofwonder.init.WonderEntities;
-import codyhuh.worldofwonder.init.WonderItems;
+import codyhuh.worldofwonder.core.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderEntities;
+import codyhuh.worldofwonder.core.WonderItems;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.ItemLike;

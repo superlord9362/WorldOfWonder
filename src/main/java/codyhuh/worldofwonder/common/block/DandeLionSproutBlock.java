@@ -3,20 +3,18 @@ package codyhuh.worldofwonder.common.block;
 import javax.annotation.Nullable;
 
 import codyhuh.worldofwonder.common.tileentity.DandeLionSproutTileEntity;
-import codyhuh.worldofwonder.init.WonderTileEntities;
+import codyhuh.worldofwonder.core.WonderTileEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,7 +27,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 
-public class DandeLionSproutBlock extends BaseEntityBlock implements IPlantable {
+public class DandeLionSproutBlock extends BaseEntityBlock implements IPlantable, BonemealableBlock {
     private static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     private static final VoxelShape SHAPE = Shapes.box(0.25, 0, 0.25, 0.75, 0.5, 0.75);
 
@@ -91,5 +89,23 @@ public class DandeLionSproutBlock extends BaseEntityBlock implements IPlantable 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AXIS);
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader p_256559_, BlockPos p_50898_, BlockState p_50899_, boolean p_50900_) {
+        return true;
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level p_220878_, RandomSource p_220879_, BlockPos p_220880_, BlockState p_220881_) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource p_220875_, BlockPos pos, BlockState p_220877_) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof DandeLionSproutTileEntity sprout) {
+            sprout.age = (int)(sprout.age * 0.9);
+        }
     }
 }
