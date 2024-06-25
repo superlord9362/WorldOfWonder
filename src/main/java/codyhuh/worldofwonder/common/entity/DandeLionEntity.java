@@ -44,6 +44,7 @@ import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
@@ -172,24 +173,28 @@ public class DandeLionEntity extends TamableAnimal {
                     return InteractionResult.SUCCESS;
                 } else {
                     if (stack.is(WonderItemTags.FERTILIZER) && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
-                        if (!player.getAbilities().instabuild) {
-                            stack.shrink(1);
+                        if (!isBaby()) {
+                            if (!player.getAbilities().instabuild) {
+                                stack.shrink(1);
+                            }
+                            this.heal(4);
+                            if (shearedTicks > 0) {
+                                shearedTicks -= 3000;
+                                if (shearedTicks < 0) {
+                                    shearedTicks = 0;
+                                    setSheared(false);
+                                }
+                            }
+                        } else {
+                            setAge((int) (this.age * 0.9));
                         }
                         if (level() instanceof ServerLevel server) {
+                            this.playSound(SoundEvents.BONE_MEAL_USE, getSoundVolume(), 1);
                             for (int i = 0; i < 5; ++i) {
                                 RandomSource random = level().getRandom();
-                                playSound(SoundEvents.BONE_MEAL_USE);
                                 server.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getEyePosition().x + random.nextGaussian() * 0.25,
                                         this.getEyeY() + (random.nextGaussian() * 0.25) - 0.15, this.getEyePosition().z + random.nextGaussian() * 0.25,
                                         1, 0.0D, 0.0D, 0.0D, 1.0D);
-                            }
-                        }
-                        this.heal(4);
-                        if (shearedTicks > 0) {
-                            shearedTicks -= 3000;
-                            if (shearedTicks < 0) {
-                                shearedTicks = 0;
-                                setSheared(false);
                             }
                         }
                         return InteractionResult.SUCCESS;
@@ -304,6 +309,7 @@ public class DandeLionEntity extends TamableAnimal {
             if (this.getTarget() == null && this.isAngry()) {
                 this.setAngry(false);
             }
+            if (this.isBaby()) return;
             if (shearedTicks > 0 && --shearedTicks == 0) {
                 setSheared(false);
             }

@@ -6,9 +6,12 @@ import codyhuh.worldofwonder.WorldOfWonder;
 import codyhuh.worldofwonder.core.other.WonderModelLayers;
 import codyhuh.worldofwonder.client.renderer.entity.model.DandeLionModel;
 import codyhuh.worldofwonder.common.entity.DandeLionEntity;
+import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 
 public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionModel<DandeLionEntity>> {
     private static final ResourceLocation FLUFF = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/dande_lion/fluff.png");
@@ -19,9 +22,14 @@ public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionMod
     }
 
     @Override
-    protected void scale(DandeLionEntity entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
-        super.scale(entitylivingbaseIn, matrixStackIn, partialTickTime);
-        if (entitylivingbaseIn.isInSittingPose()) matrixStackIn.translate(0, entitylivingbaseIn.isBaby() ? 0.175 : 0.35, 0);
+    protected void scale(DandeLionEntity lion, PoseStack stack, float partialTicks) {
+        if (lion.isBaby()) {
+            stack.scale(0.5F, 0.5F, 0.5F);
+            this.shadowRadius = 0.3F;
+        } else {
+            this.shadowRadius = 0.5F;
+        }
+        if (lion.isInSittingPose()) stack.translate(0, lion.isBaby() ? 0.175 : 0.35, 0);
     }
 
     @Override
