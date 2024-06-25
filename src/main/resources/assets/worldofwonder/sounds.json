@@ -1,22 +1,22 @@
 {
-  "dande_lion.ambient": {
+  "entity.dande_lion.ambient": {
     "sounds": [
-      "worldofwonder:dande_lion/ambient"
+      "worldofwonder:mob/dande_lion/ambient"
     ]
   },
-  "dande_lion.pur": {
+  "entity.dande_lion.purr": {
     "sounds": [
-      "worldofwonder:dande_lion/pur"
+      "worldofwonder:mob/dande_lion/purr"
     ]
   },
-  "dande_lion.death": {
+  "entity.dande_lion.death": {
     "sounds": [
-      "worldofwonder:dande_lion/death"
+      "worldofwonder:mob/dande_lion/death"
     ]
   },
-  "dande_lion.hurt": {
+  "entity.dande_lion.hurt": {
     "sounds": [
-      "worldofwonder:dande_lion/hurt"
+      "worldofwonder:mob/dande_lion/hurt"
     ]
   }
 }

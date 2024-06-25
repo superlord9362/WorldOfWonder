@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 
 import com.mojang.datafixers.util.Pair;
 
-import codyhuh.worldofwonder.core.WonderBiomes;
+import codyhuh.worldofwonder.core.registry.WonderBiomes;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

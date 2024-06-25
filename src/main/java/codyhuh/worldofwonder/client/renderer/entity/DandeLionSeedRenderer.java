@@ -1,10 +1,10 @@
 package codyhuh.worldofwonder.client.renderer.entity;
 
+import codyhuh.worldofwonder.core.other.WonderModelLayers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import codyhuh.worldofwonder.WorldOfWonder;
-import codyhuh.worldofwonder.client.ClientEvents;
 import codyhuh.worldofwonder.common.entity.DandeLionSeedEntity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -26,7 +26,7 @@ public class DandeLionSeedRenderer extends EntityRenderer<DandeLionSeedEntity> {
 
 	public DandeLionSeedRenderer(EntityRendererProvider.Context context) {
 		super(context);
-		ModelPart modelpart = context.bakeLayer(ClientEvents.DANDELION_SEED);
+		ModelPart modelpart = context.bakeLayer(WonderModelLayers.DANDELION_SEED);
 		this.part = modelpart.getChild("part");
 	}
 

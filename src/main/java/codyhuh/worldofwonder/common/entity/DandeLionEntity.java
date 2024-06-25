@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.core.WonderBlocks;
-import codyhuh.worldofwonder.core.WonderEntities;
-import codyhuh.worldofwonder.core.WonderSounds;
+import codyhuh.worldofwonder.core.registry.WonderBlocks;
+import codyhuh.worldofwonder.core.registry.WonderEntityTypes;
+import codyhuh.worldofwonder.core.registry.WonderSounds;
 import codyhuh.worldofwonder.core.other.WonderItemTags;
 import com.davigj.just_dandy.core.registry.JDParticleTypes;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -61,8 +61,6 @@ import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
 
 public class DandeLionEntity extends TamableAnimal {
     private static final EntityDataAccessor<Boolean> SHEARED = SynchedEntityData.defineId(DandeLionEntity.class, EntityDataSerializers.BOOLEAN);
@@ -151,7 +149,7 @@ public class DandeLionEntity extends TamableAnimal {
                                 1,0, 0, 0, 1);
                     }
                 } else {
-                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
+                    DandeLionSeedEntity seed = WonderEntityTypes.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
                         double rotation = random.nextInt(360);
                         seed.setPos(getX(), getY(), getZ());
@@ -321,7 +319,7 @@ public class DandeLionEntity extends TamableAnimal {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return isTame() ? WonderSounds.DANDE_LION_PUR.get() : WonderSounds.DANDE_LION_AMBIENT.get();
+        return isTame() ? WonderSounds.DANDE_LION_PURR.get() : WonderSounds.DANDE_LION_AMBIENT.get();
     }
 
     @Nullable
@@ -365,7 +363,7 @@ public class DandeLionEntity extends TamableAnimal {
             else {
                 madeChild = true;
                 for (int i = 0; i < random.nextInt(2) + 3; i++) {
-                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
+                    DandeLionSeedEntity seed = WonderEntityTypes.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
                         double rotation = Math.toRadians(level().random.nextInt(360));
                         seed.setPos(getX(), getY(), getZ());

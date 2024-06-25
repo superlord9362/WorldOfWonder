@@ -27,8 +27,9 @@ public class ItemDandelionHat extends ArmorItem {
     }
 
     @Override
-    public void onArmorTick(ItemStack stack, Level world, Player player) {
+    public void onInventoryTick(ItemStack stack, Level world, Player player, int slotIndex, int selectedIndex) {
         if (player.isAlive() && player.onGround()) {
+            System.out.println(slotIndex);
             player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 130, 0, false, false, true));
         }
     }

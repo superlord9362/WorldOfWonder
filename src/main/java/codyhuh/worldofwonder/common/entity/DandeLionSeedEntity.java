@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.core.WonderBlocks;
+import codyhuh.worldofwonder.core.registry.WonderBlocks;
+import codyhuh.worldofwonder.core.registry.WonderEntityTypes;
 import com.davigj.just_dandy.core.registry.JDParticleTypes;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class DandeLionSeedEntity extends Entity {
     private static final EntityDataAccessor<Float> X = SynchedEntityData.defineId(DandeLionSeedEntity.class, EntityDataSerializers.FLOAT);
@@ -29,6 +30,10 @@ public class DandeLionSeedEntity extends Entity {
 
     public DandeLionSeedEntity(EntityType<? extends DandeLionSeedEntity> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
+    }
+
+    public DandeLionSeedEntity(PlayMessages.SpawnEntity message, Level level) {
+        this(WonderEntityTypes.DANDE_LION_SEED.get(), level);
     }
 
     @Override

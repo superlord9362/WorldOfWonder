@@ -1,7 +1,7 @@
 package codyhuh.worldofwonder.common.world.biome;
 
-import codyhuh.worldofwonder.core.WonderEntities;
-import codyhuh.worldofwonder.core.WonderPlacedFeatures;
+import codyhuh.worldofwonder.core.registry.WonderEntityTypes;
+import codyhuh.worldofwonder.core.registry.WonderPlacedFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
@@ -53,7 +53,7 @@ public class DandelionFieldsBiomeDecorator {
 		spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 10, 4, 4));
 		spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.COW, 8, 4, 4));
 		spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.RABBIT, 4, 2, 3));
-		spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(WonderEntities.DANDE_LION.get(), 30, 2, 3));
+		spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(WonderEntityTypes.DANDE_LION.get(), 30, 2, 3));
 		spawnSettings.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(EntityType.BAT, 10, 8, 8));
 		spawnSettings.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 100, 4, 4));
 		spawnSettings.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 95, 4, 4));

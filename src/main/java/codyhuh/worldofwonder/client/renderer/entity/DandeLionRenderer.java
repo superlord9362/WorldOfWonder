@@ -3,7 +3,7 @@ package codyhuh.worldofwonder.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import codyhuh.worldofwonder.WorldOfWonder;
-import codyhuh.worldofwonder.client.ClientEvents;
+import codyhuh.worldofwonder.core.other.WonderModelLayers;
 import codyhuh.worldofwonder.client.renderer.entity.model.DandeLionModel;
 import codyhuh.worldofwonder.common.entity.DandeLionEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -15,7 +15,7 @@ public class DandeLionRenderer extends MobRenderer<DandeLionEntity, DandeLionMod
     private static final ResourceLocation NORMAL = new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/dande_lion/normal.png");
 
 	public DandeLionRenderer(EntityRendererProvider.Context renderManagerIn) {
-		super(renderManagerIn, new DandeLionModel<>(renderManagerIn.bakeLayer(ClientEvents.DANDELION)), 0.25F);
+		super(renderManagerIn, new DandeLionModel<>(renderManagerIn.bakeLayer(WonderModelLayers.DANDELION)), 0.25F);
     }
 
     @Override

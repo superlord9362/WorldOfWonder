@@ -2,8 +2,8 @@ package codyhuh.worldofwonder.common.block;
 
 import javax.annotation.Nullable;
 
-import codyhuh.worldofwonder.common.tileentity.DandeLionSproutTileEntity;
-import codyhuh.worldofwonder.core.WonderTileEntities;
+import codyhuh.worldofwonder.common.block.entity.DandeLionSproutTileEntity;
+import codyhuh.worldofwonder.core.registry.WonderBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -77,13 +77,13 @@ public class DandeLionSproutBlock extends BaseEntityBlock implements IPlantable,
     @Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-		return pLevel.isClientSide ? null :  createTickerHelper(pBlockEntityType, WonderTileEntities.DANDE_LION_SPROUT.get(), DandeLionSproutTileEntity::tick);
+		return pLevel.isClientSide ? null :  createTickerHelper(pBlockEntityType, WonderBlockEntityTypes.DANDE_LION_SPROUT.get(), DandeLionSproutTileEntity::tick);
 	}
 
     @org.jetbrains.annotations.Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return WonderTileEntities.DANDE_LION_SPROUT.get().create(pos, state);
+        return WonderBlockEntityTypes.DANDE_LION_SPROUT.get().create(pos, state);
     }
 
     @Override
