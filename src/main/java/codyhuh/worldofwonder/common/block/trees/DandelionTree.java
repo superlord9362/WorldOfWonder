@@ -12,6 +12,6 @@ public class DandelionTree extends AbstractTreeGrower {
     @Nullable
     @Override
     protected ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource random, boolean largeHive) {
-        return WonderFeatures.DANDELION;
+        return WonderFeatures.WonderConfiguredFeatures.DANDELION;
     }
 }

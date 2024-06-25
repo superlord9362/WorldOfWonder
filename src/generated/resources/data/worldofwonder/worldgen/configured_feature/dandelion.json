@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:tree",
+  "type": "worldofwonder:dandelion_tree",
   "config": {
     "decorators": [],
     "dirt_provider": {

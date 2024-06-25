@@ -19,6 +19,8 @@ public class WonderSounds {
     public static final RegistryObject<SoundEvent> DANDE_LION_HURT = HELPER.createSoundEvent("entity.dande_lion.hurt");
     public static final RegistryObject<SoundEvent> DANDE_LION_DEATH = HELPER.createSoundEvent("entity.dande_lion.death");
 
+    public static final RegistryObject<SoundEvent> MUSIC_BIOME_DANDELION_FIELDS = HELPER.createSoundEvent("music.overworld.dandelion_fields");
+
     private static RegistryObject<SoundEvent> add(String name) {
         return REGISTRY.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(WorldOfWonder.MOD_ID, name)));
     }

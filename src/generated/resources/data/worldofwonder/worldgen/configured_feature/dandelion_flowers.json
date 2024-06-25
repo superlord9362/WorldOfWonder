@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:random_patch",
+  "type": "worldofwonder:dandelion_patch",
   "config": {
     "feature": {
       "feature": {

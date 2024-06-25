@@ -61,7 +61,7 @@ minecraft {
 			property "mixin.env.remapRefMap", "true"
 			property "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
 			property "blueprint.indev", "true"
-			args "--mod", project.modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources"), "--existing-mod", "blueprint", "--existing-mod", "terrablender", "--existing-mod", "worldofwonder"
+			args "--mod", project.modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources"), "--existing-mod", "blueprint", "--existing-mod", "worldofwonder"
 			mods {
 				worldofwonder {
 					source sourceSets.main
@@ -78,8 +78,6 @@ sourceSets.main.resources {
 dependencies {
 	minecraft "net.minecraftforge:forge:${project.minecraft}-${project.forge}"
 	implementation fg.deobf("com.teamabnormals:blueprint:${project.minecraft}-${project.blueprint}")
-
-	implementation fg.deobf("maven.modrinth:terrablender:HI0iCUpi")
 	compileOnly fg.deobf("maven.modrinth:just-dandy:n5ZTXZvu")
 
 	compileOnly fg.deobf("mezz.jei:jei-${project.minecraft}-common-api:${project.jei}")

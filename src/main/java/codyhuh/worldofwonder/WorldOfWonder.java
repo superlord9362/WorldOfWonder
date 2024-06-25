@@ -11,7 +11,7 @@ import codyhuh.worldofwonder.client.renderer.entity.model.DandeLionModel;
 import codyhuh.worldofwonder.client.renderer.entity.model.DandelionHatModel;
 import codyhuh.worldofwonder.common.CommonProxy;
 import codyhuh.worldofwonder.core.other.WonderCompat;
-import codyhuh.worldofwonder.common.world.WonderFeatureAndBiomeGenerator;
+import codyhuh.worldofwonder.core.data.server.WonderDatapackBuiltinEntriesProvider;
 import codyhuh.worldofwonder.core.registry.*;
 import com.teamabnormals.blueprint.core.util.registry.RegistryHelper;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -55,9 +55,9 @@ public class WorldOfWonder {
         MinecraftForge.EVENT_BUS.register(this);
 
         REGISTRY_HELPER.register(bus);
+        WonderFeatures.FEATURES.register(bus);
         WonderFoliagePlacers.REGISTRY.register(bus);
         WonderTabs.REGISTRY.register(bus);
-
 
         bus.addListener(this::clientSetup);
         bus.addListener(this::commonSetup);
@@ -89,7 +89,7 @@ public class WorldOfWonder {
         PackOutput packOutput = dataGenerator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         boolean server = event.includeServer();
-        dataGenerator.addProvider(server, new WonderFeatureAndBiomeGenerator(packOutput, lookupProvider));
+        dataGenerator.addProvider(server, new WonderDatapackBuiltinEntriesProvider(packOutput, lookupProvider));
     }
 
     @OnlyIn(Dist.CLIENT)
