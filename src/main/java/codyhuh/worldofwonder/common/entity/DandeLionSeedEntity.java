@@ -1,17 +1,26 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.init.WonderBlocks;
+import codyhuh.worldofwonder.core.WonderBlocks;
+import com.davigj.just_dandy.core.registry.JDParticleTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 
 public class DandeLionSeedEntity extends Entity {
@@ -55,15 +64,48 @@ public class DandeLionSeedEntity extends Entity {
         super.tick();
 
         if (isAlive()) {
-            //Calculate the motion
-            setDeltaMovement(Mth.clamp(this.entityData.get(X) - getDeltaMovement().x(), -0.2, 0.2), Math.sin(tickCount * 0.1) / 5.0, Mth.clamp(this.entityData.get(Z) - getDeltaMovement().z(), -0.2, 0.2));
+// Current position
+            Vec3 currentPos = position();
 
-            //Move using the motion
-            setPos(getX() + getDeltaMovement().x(), getY() + getDeltaMovement().y(), getZ() + getDeltaMovement().z());
+            Vec3 targetPos = new Vec3(entityData.get(X), getY(), entityData.get(Z));
+            Vec3 direction = targetPos.subtract(currentPos).normalize();
+            double speed = 0.1; // Adjust the speed as necessary
+            Vec3 deltaMovement = new Vec3(
+                    Mth.clamp(direction.x * speed, -0.2, 0.2),
+                    Math.sin(tickCount * 0.1) / 5.0,
+                    Mth.clamp(direction.z * speed, -0.2, 0.2)
+            );
 
-            if (tickCount > 20 && level().getBlockState(new BlockPos((int) getX(), (int) getY() - 1, (int) getZ())).canOcclude()) {
-                level().setBlock(blockPosition(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), 3);
-                kill();
+            setDeltaMovement(deltaMovement);
+            move(MoverType.SELF, getDeltaMovement());
+
+            ParticleOptions particle = ParticleTypes.WAX_OFF;
+            if (ModList.get().isLoaded("just_dandy")) {
+                particle = JDParticleTypes.DANDELION_FLUFF.get();
+            }
+            if (tickCount % 3 == 0) {
+                level().addParticle(particle, getX() + random.nextGaussian() * 0.2,
+                        getEyeY() - 1.2 + random.nextGaussian() * 0.2, getZ() + random.nextGaussian() * 0.2, 0, 0, 0);
+            }
+            if (tickCount > 20 && level().getBlockState(blockPosition().below()).canOcclude()) {
+                if (WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState().canSurvive(level(), blockPosition())
+                        && level().getBlockState(blockPosition()).canBeReplaced()) {
+                    for (int i = 0; i < 4; i++) {
+                        level().addParticle(particle, getX() + random.nextGaussian() * 0.2,
+                                getEyeY() - 1.2 + random.nextGaussian() * 0.2, getZ() + random.nextGaussian() * 0.2, 0, 0, 0);
+                    }
+                    level().setBlock(blockPosition(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), 3);
+                } else {
+                    if (level() instanceof ServerLevel server) {
+                        ItemStack sproutStack = WonderBlocks.DANDE_LION_SPROUT.get().asItem().getDefaultInstance();
+                        sproutStack.setCount(1);
+                        ItemEntity fail = new ItemEntity(level(), blockPosition().getX(), blockPosition().getY() + 0.5,
+                                blockPosition().getZ(), sproutStack);
+                        fail.setDeltaMovement(this.getDeltaMovement().add(new Vec3(0, 0.07, 0)));
+                        server.addFreshEntity(fail);
+                    }
+                }
+                remove(RemovalReason.DISCARDED);
             }
         }
     }

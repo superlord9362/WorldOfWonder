@@ -1,4 +1,4 @@
-package codyhuh.worldofwonder.init;
+package codyhuh.worldofwonder.core;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
