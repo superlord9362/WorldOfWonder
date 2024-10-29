@@ -302,7 +302,6 @@ public class DandeLionEntity extends TamableAnimal {
         return super.hurt(source, amount);
     }
 
-    @SuppressWarnings("resource")
 	@Override
     public void tick() {
         super.tick();
@@ -349,7 +348,6 @@ public class DandeLionEntity extends TamableAnimal {
         this.entityData.set(SHEARED, sheared);
     }
 
-    @SuppressWarnings("resource")
 	public void shear() {
         if (!level().isClientSide) {
             shearedTicks = 12000;

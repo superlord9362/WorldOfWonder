@@ -1,26 +1,26 @@
 {
-  "dande_lion.ambient": {
+  "entity.dande_lion.ambient": {
     "subtitle": "subtitle.worldofwonder.dande_lion.ambient",
     "sounds": [
-      "worldofwonder:dande_lion/ambient"
+      "worldofwonder:entity/dande_lion/ambient"
     ]
   },
-  "dande_lion.pur": {
+  "entity.dande_lion.pur": {
     "subtitle": "subtitle.worldofwonder.dande_lion.pur",
     "sounds": [
-      "worldofwonder:dande_lion/pur"
+      "worldofwonder:entity/dande_lion/pur"
     ]
   },
-  "dande_lion.death": {
+  "entity.dande_lion.death": {
     "subtitle": "subtitle.worldofwonder.dande_lion.death",
     "sounds": [
-      "worldofwonder:dande_lion/death"
+      "worldofwonder:entity/dande_lion/death"
     ]
   },
-  "dande_lion.hurt": {
+  "entity.dande_lion.hurt": {
     "subtitle": "subtitle.worldofwonder.dande_lion.hurt",
     "sounds": [
-      "worldofwonder:dande_lion/hurt"
+      "worldofwonder:entity/dande_lion/hurt"
     ]
   }
 }
