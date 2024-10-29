@@ -88,7 +88,8 @@
       "minecraft:patch_pumpkin",
       "worldofwonder:placed_dandelion_flowers",
       "worldofwonder:placed_dandelion_fluff",
-      "worldofwonder:placed_dandelion"
+      "worldofwonder:placed_dandelion",
+      "worldofwonder:placed_mellow_petals"
     ],
     [
       "minecraft:freeze_top_layer"

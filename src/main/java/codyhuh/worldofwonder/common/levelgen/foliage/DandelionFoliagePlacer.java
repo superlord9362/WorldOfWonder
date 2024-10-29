@@ -1,4 +1,4 @@
-package codyhuh.worldofwonder.common.world.gen.foliage;
+package codyhuh.worldofwonder.common.levelgen.foliage;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

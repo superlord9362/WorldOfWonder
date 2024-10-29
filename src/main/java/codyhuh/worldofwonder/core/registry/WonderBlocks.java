@@ -1,10 +1,7 @@
 package codyhuh.worldofwonder.core.registry;
 
 import codyhuh.worldofwonder.WorldOfWonder;
-import codyhuh.worldofwonder.common.block.DandeLionSproutBlock;
-import codyhuh.worldofwonder.common.block.DandelionFluffBlock;
-import codyhuh.worldofwonder.common.block.PottedSproutBlock;
-import codyhuh.worldofwonder.common.block.VerticalSlabBlock;
+import codyhuh.worldofwonder.common.block.*;
 import codyhuh.worldofwonder.core.other.WonderProperties;
 import com.mojang.datafixers.util.Pair;
 import com.teamabnormals.blueprint.common.block.LogBlock;
@@ -17,6 +14,7 @@ import com.teamabnormals.blueprint.common.block.sign.BlueprintWallSignBlock;
 import com.teamabnormals.blueprint.core.util.PropertyUtil;
 import com.teamabnormals.blueprint.core.util.item.CreativeModeTabContentsPopulator;
 import com.teamabnormals.blueprint.core.util.registry.BlockSubRegistryHelper;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.MapColor;
@@ -24,6 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
 import static net.minecraft.world.item.CreativeModeTabs.*;
+import static net.minecraft.world.item.Items.PINK_PETALS;
 import static net.minecraft.world.item.crafting.Ingredient.of;
 
 @Mod.EventBusSubscriber(modid = WorldOfWonder.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -53,12 +52,14 @@ public class WonderBlocks {
     public static final RegistryObject<Block> STEM_LADDER = HELPER.createFuelBlock("stem_ladder", () -> new LadderBlock(WonderProperties.STEM.ladder()), 300);
 
     public static final RegistryObject<BlueprintChestBlock> STEM_CHEST = HELPER.createChestBlock("stem", WonderProperties.STEM.chest());
-    public static final RegistryObject<BlueprintTrappedChestBlock> TRAPPED_STEM_CHEST = HELPER.createTrappedChestBlockNamed("stem", WonderProperties.STEM.chest());
+    public static final RegistryObject<BlueprintTrappedChestBlock> TRAPPED_STEM_CHEST = HELPER.createTrappedChestBlock("stem", WonderProperties.STEM.chest());
 
     public static final RegistryObject<Block> STEM_VERTICAL_SLAB = HELPER.createBlock("stem_vertical_slab", () -> new VerticalSlabBlock(Block.Properties.copy(STEM_SLAB.get())));
 
     public static final RegistryObject<Block> DANDE_LION_SPROUT = HELPER.createBlock("dande_lion_sprout", DandeLionSproutBlock::new, new Item.Properties());
     public static final RegistryObject<Block> POTTED_DANDE_LION_SPROUT = HELPER.createBlockNoItem("potted_dande_lion_sprout", PottedSproutBlock::new);
+
+    public static final RegistryObject<Block> MELLOW_PETALS = HELPER.createBlockNoItem("mellow_petals", () -> new MellowPetalsBlock(Block.Properties.copy(Blocks.PINK_PETALS).mapColor(MapColor.COLOR_YELLOW)));
 
     public static void setupTabEditors() {
         CreativeModeTabContentsPopulator.mod(WorldOfWonder.MOD_ID)

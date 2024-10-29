@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.core.registry;
 
 import codyhuh.worldofwonder.WorldOfWonder;
-import codyhuh.worldofwonder.common.world.gen.foliage.DandelionFluffFoliagePlacer;
-import codyhuh.worldofwonder.common.world.gen.foliage.DandelionFoliagePlacer;
+import codyhuh.worldofwonder.common.levelgen.foliage.DandelionFluffFoliagePlacer;
+import codyhuh.worldofwonder.common.levelgen.foliage.DandelionFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

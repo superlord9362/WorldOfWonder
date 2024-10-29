@@ -2,7 +2,7 @@
   "music.overworld.dandelion_fields": {
     "sounds": [
       {
-        "name": "music/game/aerie",
+        "name": "music/game/swamp/aerie",
         "stream": true,
         "volume": 0.4,
         "weight": 3
