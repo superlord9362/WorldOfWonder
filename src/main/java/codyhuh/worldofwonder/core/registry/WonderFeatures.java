@@ -107,7 +107,7 @@ public class WonderFeatures {
             register(context, PLACED_DANDELION, WonderConfiguredFeatures.DANDELION, PlacementUtils.countExtra(1, 0.05F, 1), InSquarePlacement.spread(), placementmodifier, PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(Blocks.OAK_SAPLING.defaultBlockState(), BlockPos.ZERO)), BiomeFilter.biome());
             register(context, PLACED_DANDELION_FLUFF, WonderConfiguredFeatures.DANDELION_FLUFF, PlacementUtils.countExtra(1, 0.05F, 1), InSquarePlacement.spread(), placementmodifier, PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(Blocks.OAK_SAPLING.defaultBlockState(), BlockPos.ZERO)), BiomeFilter.biome());
             register(context, PLACED_MELLOW_PETALS, WonderConfiguredFeatures.MELLOW_PETALS,
-                    RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
+                    RarityFilter.onAverageOnceEvery(2), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), BlockPredicateFilter.forPredicate(BlockPredicate.anyOf(BlockPredicate.ONLY_IN_AIR_PREDICATE)));
         }
 
         public static ResourceKey<PlacedFeature> createKey(String name) {
