@@ -1,10 +1,7 @@
 package codyhuh.worldofwonder.client.renderer.entity.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import codyhuh.worldofwonder.common.entity.DandeLionEntity;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -14,7 +11,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
-public class DandeLionModel<T extends DandeLionEntity> extends EntityModel<DandeLionEntity> {
+public class DandeLionModel<T extends DandeLionEntity> extends AgeableHierarchicalModel<DandeLionEntity> {
 	private final ModelPart body;
 	private final ModelPart head;
 	private final ModelPart tail;
@@ -26,6 +23,7 @@ public class DandeLionModel<T extends DandeLionEntity> extends EntityModel<Dande
 	private final ModelPart earRight;
 
 	public DandeLionModel(ModelPart root) {
+        super(0.5F, -24.0F);
 		this.body = root.getChild("body");
 		this.head = body.getChild("head");
 		this.earLeft = head.getChild("earLeft");
@@ -99,7 +97,12 @@ public class DandeLionModel<T extends DandeLionEntity> extends EntityModel<Dande
             this.tail.xRot = 1.0471975511965976F;
 
         } else {
-            this.body.y = Mth.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 12.02F;
+            if (young) {
+                this.body.y = Mth.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 24.02F;
+            }
+            else {
+                this.body.y = Mth.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 12.02F;
+            }
             this.body.xRot = Mth.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount;
             this.head.y = Mth.cos(1.0F + limbSwing * speed * 0.4F) * degree * -0.05F * limbSwingAmount - 3.05F;
             this.legRight.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -127,14 +130,8 @@ public class DandeLionModel<T extends DandeLionEntity> extends EntityModel<Dande
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
     }
 
-    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
+    @Override
+    public ModelPart root() {
+        return body;
     }
-
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		body.render(poseStack, buffer, packedLight, packedOverlay);
-	}
 }
