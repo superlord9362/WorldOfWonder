@@ -1,0 +1,6 @@
+{
+  "parent": "worldofwonder:block/flowerbed_water_1",
+  "textures": {
+    "flowerbed": "worldofwonder:block/mellow_petals"
+  }
+}

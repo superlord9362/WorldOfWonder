@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.common.entity;
 
-import codyhuh.worldofwonder.core.WonderBlocks;
-import codyhuh.worldofwonder.core.WonderEntities;
-import codyhuh.worldofwonder.core.WonderSounds;
+import codyhuh.worldofwonder.core.registry.WonderBlocks;
+import codyhuh.worldofwonder.core.registry.WonderEntityTypes;
+import codyhuh.worldofwonder.core.registry.WonderSounds;
 import codyhuh.worldofwonder.core.other.WonderItemTags;
 import com.davigj.just_dandy.core.registry.JDParticleTypes;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -44,6 +44,7 @@ import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
@@ -61,8 +62,6 @@ import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
 
 public class DandeLionEntity extends TamableAnimal {
     private static final EntityDataAccessor<Boolean> SHEARED = SynchedEntityData.defineId(DandeLionEntity.class, EntityDataSerializers.BOOLEAN);
@@ -152,7 +151,7 @@ public class DandeLionEntity extends TamableAnimal {
                                 1,0, 0, 0, 1);
                     }
                 } else {
-                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
+                    DandeLionSeedEntity seed = WonderEntityTypes.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
                         double rotation = random.nextInt(360);
                         seed.setPos(getX(), getY(), getZ());
@@ -175,24 +174,28 @@ public class DandeLionEntity extends TamableAnimal {
                     return InteractionResult.SUCCESS;
                 } else {
                     if (stack.is(WonderItemTags.FERTILIZER) && (getHealth() < getMaxHealth() || shearedTicks != 0)) {
-                        if (!player.getAbilities().instabuild) {
-                            stack.shrink(1);
+                        if (!isBaby()) {
+                            if (!player.getAbilities().instabuild) {
+                                stack.shrink(1);
+                            }
+                            this.heal(4);
+                            if (shearedTicks > 0) {
+                                shearedTicks -= 3000;
+                                if (shearedTicks < 0) {
+                                    shearedTicks = 0;
+                                    setSheared(false);
+                                }
+                            }
+                        } else {
+                            setAge((int) (this.age * 0.9));
                         }
                         if (level() instanceof ServerLevel server) {
+                            this.playSound(SoundEvents.BONE_MEAL_USE, getSoundVolume(), 1);
                             for (int i = 0; i < 5; ++i) {
                                 RandomSource random = level().getRandom();
-                                playSound(SoundEvents.BONE_MEAL_USE);
                                 server.sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getEyePosition().x + random.nextGaussian() * 0.25,
                                         this.getEyeY() + (random.nextGaussian() * 0.25) - 0.15, this.getEyePosition().z + random.nextGaussian() * 0.25,
                                         1, 0.0D, 0.0D, 0.0D, 1.0D);
-                            }
-                        }
-                        this.heal(4);
-                        if (shearedTicks > 0) {
-                            shearedTicks -= 3000;
-                            if (shearedTicks < 0) {
-                                shearedTicks = 0;
-                                setSheared(false);
                             }
                         }
                         return InteractionResult.SUCCESS;
@@ -307,6 +310,7 @@ public class DandeLionEntity extends TamableAnimal {
             if (this.getTarget() == null && this.isAngry()) {
                 this.setAngry(false);
             }
+            if (this.isBaby()) return;
             if (shearedTicks > 0 && --shearedTicks == 0) {
                 setSheared(false);
             }
@@ -322,7 +326,7 @@ public class DandeLionEntity extends TamableAnimal {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return isTame() ? WonderSounds.DANDE_LION_PUR.get() : WonderSounds.DANDE_LION_AMBIENT.get();
+        return isTame() ? WonderSounds.DANDE_LION_PURR.get() : WonderSounds.DANDE_LION_AMBIENT.get();
     }
 
     @Nullable
@@ -366,7 +370,7 @@ public class DandeLionEntity extends TamableAnimal {
             else {
                 madeChild = true;
                 for (int i = 0; i < random.nextInt(2) + 3; i++) {
-                    DandeLionSeedEntity seed = WonderEntities.DANDE_LION_SEED.get().create(level());
+                    DandeLionSeedEntity seed = WonderEntityTypes.DANDE_LION_SEED.get().create(level());
                     if (seed != null) {
                         double rotation = Math.toRadians(level().random.nextInt(360));
                         seed.setPos(getX(), getY(), getZ());

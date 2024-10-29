@@ -1,8 +1,8 @@
 package codyhuh.worldofwonder.client.renderer.item;
 
-import codyhuh.worldofwonder.client.ClientEvents;
+import codyhuh.worldofwonder.core.other.WonderModelLayers;
 import codyhuh.worldofwonder.client.renderer.entity.model.DandelionHatModel;
-import codyhuh.worldofwonder.core.WonderItems;
+import codyhuh.worldofwonder.core.registry.WonderItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,7 +18,7 @@ public class DandelionHatRenderProperties implements IClientItemExtensions {
 	
 	public static void initializeModels() {
 		init = true;
-		DANDELION_HAT_MODEL = new DandelionHatModel(Minecraft.getInstance().getEntityModels().bakeLayer(ClientEvents.DANDELION_HAT));
+		DANDELION_HAT_MODEL = new DandelionHatModel(Minecraft.getInstance().getEntityModels().bakeLayer(WonderModelLayers.DANDELION_HAT));
 	}
 	
 	@Override
