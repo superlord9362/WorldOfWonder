@@ -5,10 +5,10 @@
       "worldofwonder:entity/dande_lion/ambient"
     ]
   },
-  "entity.dande_lion.pur": {
-    "subtitle": "subtitle.worldofwonder.dande_lion.pur",
+  "entity.dande_lion.purr": {
+    "subtitle": "subtitle.worldofwonder.dande_lion.purr",
     "sounds": [
-      "worldofwonder:entity/dande_lion/pur"
+      "worldofwonder:entity/dande_lion/purr"
     ]
   },
   "entity.dande_lion.death": {

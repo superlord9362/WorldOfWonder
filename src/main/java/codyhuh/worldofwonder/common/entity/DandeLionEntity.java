@@ -287,6 +287,11 @@ public class DandeLionEntity extends TamableAnimal {
     }
 
     @Override
+    public int getAmbientSoundInterval() {
+        return super.getAmbientSoundInterval() * 3;
+    }
+
+    @Override
     public void setTarget(@Nullable LivingEntity entitylivingbaseIn) {
         super.setTarget(entitylivingbaseIn);
         if (entitylivingbaseIn == null) {
