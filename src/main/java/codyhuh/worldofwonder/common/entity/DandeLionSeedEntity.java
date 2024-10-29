@@ -12,6 +12,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -69,19 +71,17 @@ public class DandeLionSeedEntity extends Entity {
         super.tick();
 
         if (isAlive()) {
-// Current position
-            Vec3 currentPos = position();
+            Vec3 currentPos = position(); // Current position
 
             Vec3 targetPos = new Vec3(entityData.get(X), getY(), entityData.get(Z));
             Vec3 direction = targetPos.subtract(currentPos).normalize();
             double speed = 0.1; // Adjust the speed as necessary
             Vec3 deltaMovement = new Vec3(
                     Mth.clamp(direction.x * speed, -0.2, 0.2),
-                    Math.sin(tickCount * 0.1) / 5.0,
+                    Math.sin(tickCount * speed) / 5.0,
                     Mth.clamp(direction.z * speed, -0.2, 0.2)
             );
 
-            setDeltaMovement(deltaMovement);
             move(MoverType.SELF, getDeltaMovement());
 
             ParticleOptions particle = ParticleTypes.WAX_OFF;
@@ -92,6 +92,25 @@ public class DandeLionSeedEntity extends Entity {
                 level().addParticle(particle, getX() + random.nextGaussian() * 0.2,
                         getEyeY() - 1.2 + random.nextGaussian() * 0.2, getZ() + random.nextGaussian() * 0.2, 0, 0, 0);
             }
+            if (tickCount > 300 || currentPos.distanceToSqr(targetPos) < 3.0D) {
+                Vec3 down = getDeltaMovement().add(0.0D, -0.05D, 0.0D);
+                setDeltaMovement(down);
+
+                if (tickCount > 400 && !WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState().canSurvive(level(), blockPosition()) || !level().getBlockState(blockPosition()).canBeReplaced()) {
+                    if (level() instanceof ServerLevel server) {
+                        ItemStack sproutStack = WonderBlocks.DANDE_LION_SPROUT.get().asItem().getDefaultInstance();
+                        sproutStack.setCount(1);
+                        ItemEntity fail = new ItemEntity(level(), blockPosition().getX(), blockPosition().getY() + 0.5,
+                                blockPosition().getZ(), sproutStack);
+                        fail.setDeltaMovement(this.getDeltaMovement().add(new Vec3(0, 0.07, 0)));
+                        server.addFreshEntity(fail);
+                    }
+                    remove(RemovalReason.DISCARDED);
+                }
+            }
+            else {
+                setDeltaMovement(deltaMovement);
+            }
             if (tickCount > 20 && level().getBlockState(blockPosition().below()).canOcclude()) {
                 if (WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState().canSurvive(level(), blockPosition())
                         && level().getBlockState(blockPosition()).canBeReplaced()) {
@@ -99,6 +118,7 @@ public class DandeLionSeedEntity extends Entity {
                         level().addParticle(particle, getX() + random.nextGaussian() * 0.2,
                                 getEyeY() - 1.2 + random.nextGaussian() * 0.2, getZ() + random.nextGaussian() * 0.2, 0, 0, 0);
                     }
+                    level().playLocalSound(blockPosition(), SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
                     level().setBlock(blockPosition(), WonderBlocks.DANDE_LION_SPROUT.get().defaultBlockState(), 3);
                 } else {
                     if (level() instanceof ServerLevel server) {

@@ -1,0 +1,45 @@
+{
+  "language.name": "Czech",
+  "language.region": "Czech Republic",
+  "language.code": "ces_CZ",
+
+  "itemGroup.world_of_wonder_item_group": "World of Wonder",
+
+  "advancements.adventure.crafthat.title": "Jízda na jarním vánku",
+  "advancements.adventure.crafthat.description": "Vyrob si pampeliškový klobouk, který se jemně snáší k zemi!",
+
+  "block.worldofwonder.dandelion_fluff": "Pampeliškové chmýří",
+  "block.worldofwonder.dandelion_petals": "Pampeliškové plátky",
+  "block.worldofwonder.stem_log": "Pampeliškový stonek",
+  "block.worldofwonder.stripped_stem_log": "Oloupaný pampeliškový stonek",
+  "block.worldofwonder.stem_wood": "Pampeliškové dřevo",
+  "block.worldofwonder.stripped_stem_wood": "Oloupané pampeliškové dřevo",
+  "block.worldofwonder.stem_planks": "Stonková prkna",
+  "block.worldofwonder.stem_door": "Stonkové dveře",
+  "block.worldofwonder.stem_trapdoor": "Stonkový poklop",
+  "block.worldofwonder.stem_fence": "Stonkový plot",
+  "block.worldofwonder.stem_button": "Stonkové tlačítko",
+  "block.worldofwonder.stem_slab": "Stonkový půlblok",
+  "block.worldofwonder.stem_vertical_slab": "Stonkový vertikální půlblok",
+  "block.worldofwonder.stem_fence_gate": "Stonková branka",
+  "block.worldofwonder.stem_pressure_plate": "Stonková nášlapná deska",
+  "block.worldofwonder.stem_stairs": "Stonkové schody",
+  "block.worldofwonder.stem_bookshelf": "Stonková knihovna",
+  "block.worldofwonder.stem_ladder": "Stonkový žebřík",
+  "block.worldofwonder.dande_lion_sprout": "Výhonek pampeliškového lva",
+  "block.worldofwonder.stem_sign": "Stonková cedule",
+  "block.worldofwonder.stem_hanging_sign": "Stonková závěsná cedule",
+  "block.worldofwonder.stem_chest": "Stonková truhla",
+  "block.worldofwonder.stem_trapped_chest": "Stonková nástražná truhla",
+
+  "item.worldofwonder.bloom_meal": "Květinová moučka",
+  "item.worldofwonder.dande_lion_spawn_egg": "Vajíčko s pampeliškovým lvem",
+  "item.worldofwonder.dandelion_hat": "Pampeliškový klobouk",
+  "item.worldofwonder.stem_boat": "Stonkový člun",
+  "item.worldofwonder.stem_chest_boat": "Stonkový člun s truhlou",
+
+  "entity.worldofwonder.stem_chest_boat": "Člun s truhlou",
+  "entity.worldofwonder.dande_lion": "Pampeliškový lev",
+
+  "biome.worldofwonder.dandelion_fields": "Pampeliškové pole"
+}

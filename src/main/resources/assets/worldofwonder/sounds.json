@@ -1,60 +1,26 @@
 {
-  "music.overworld.dandelion_fields": {
+  "dande_lion.ambient": {
+    "subtitle": "subtitle.worldofwonder.dande_lion.ambient",
     "sounds": [
-      {
-        "name": "music/game/swamp/aerie",
-        "stream": true,
-        "volume": 0.4,
-        "weight": 3
-      },
-      {
-        "name": "music/game/floating_dream",
-        "stream": true,
-        "volume": 0.4,
-        "weight": 3
-      },
-      {
-        "name": "music/game/calm1",
-        "stream": true
-      },
-      {
-        "name": "music/game/calm2",
-        "stream": true
-      },
-      {
-        "name": "music/game/calm3",
-        "stream": true
-      },
-      {
-        "name": "music/game/echo_in_the_wind",
-        "stream": true,
-        "volume": 0.4
-      },
-      {
-        "name": "music/game/left_to_bloom",
-        "stream": true,
-        "volume": 0.4
-      }
+      "worldofwonder:dande_lion/ambient"
     ]
   },
-  "entity.dande_lion.ambient": {
+  "dande_lion.pur": {
+    "subtitle": "subtitle.worldofwonder.dande_lion.pur",
     "sounds": [
-      "worldofwonder:mob/dande_lion/ambient"
+      "worldofwonder:dande_lion/pur"
     ]
   },
-  "entity.dande_lion.purr": {
+  "dande_lion.death": {
+    "subtitle": "subtitle.worldofwonder.dande_lion.death",
     "sounds": [
-      "worldofwonder:mob/dande_lion/purr"
+      "worldofwonder:dande_lion/death"
     ]
   },
-  "entity.dande_lion.death": {
+  "dande_lion.hurt": {
+    "subtitle": "subtitle.worldofwonder.dande_lion.hurt",
     "sounds": [
-      "worldofwonder:mob/dande_lion/death"
-    ]
-  },
-  "entity.dande_lion.hurt": {
-    "sounds": [
-      "worldofwonder:mob/dande_lion/hurt"
+      "worldofwonder:dande_lion/hurt"
     ]
   }
 }

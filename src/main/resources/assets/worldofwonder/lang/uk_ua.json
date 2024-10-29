@@ -1,0 +1,45 @@
+{
+  "language.name": "Ukrainian",
+  "language.region": "Ukraine",
+  "language.code": "ukr_UA",
+
+  "itemGroup.world_of_wonder_item_group": "World of Wonder",
+
+  "advancements.adventure.crafthat.title": "Катання весняним бризом",
+  "advancements.adventure.crafthat.description": "Змайструйте кульбабовий капелюї, щоб м'яко приземлятися на землю!",
+
+  "block.worldofwonder.dandelion_fluff": "Кульбабовий пух",
+  "block.worldofwonder.dandelion_petals": "Кульбабові пелюстки",
+  "block.worldofwonder.stem_log": "Кульбабове стебло",
+  "block.worldofwonder.stripped_stem_log": "Обтесане кульбабове стебло",
+  "block.worldofwonder.stem_wood": "Кульбабова деревина",
+  "block.worldofwonder.stripped_stem_wood": "Обтесана кульбабова деревина",
+  "block.worldofwonder.stem_planks": "Стеблові дошки",
+  "block.worldofwonder.stem_door": "Стеблові двері",
+  "block.worldofwonder.stem_trapdoor": "Стебловий люк",
+  "block.worldofwonder.stem_fence": "Стебловий паркан",
+  "block.worldofwonder.stem_button": "Стеблова кнопка",
+  "block.worldofwonder.stem_slab": "Стеблова плита",
+  "block.worldofwonder.stem_vertical_slab": "Стеблова вертикальна плита",
+  "block.worldofwonder.stem_fence_gate": "Стеблова хвіртка",
+  "block.worldofwonder.stem_pressure_plate": "Стеблова натискна плита",
+  "block.worldofwonder.stem_stairs": "Стеблові сходи",
+  "block.worldofwonder.stem_bookshelf": "Стеблова книжкова полиця",
+  "block.worldofwonder.stem_ladder": "Стеблова драбина",
+  "block.worldofwonder.dande_lion_sprout": "Паросток кульбабового лева",
+  "block.worldofwonder.stem_sign": "Стеблова табличка",
+  "block.worldofwonder.stem_hanging_sign": "Стеблова вивіска",
+  "block.worldofwonder.stem_chest": "Стеблова скриня",
+  "block.worldofwonder.stem_trapped_chest": "Стеблова скриня-пастка",
+
+  "item.worldofwonder.bloom_meal": "Квіткове борошно",
+  "item.worldofwonder.dande_lion_spawn_egg": "Яйце виклику кульбабового лева",
+  "item.worldofwonder.dandelion_hat": "Кульбабовий капелюх",
+  "item.worldofwonder.stem_boat": "Стебловий човен",
+  "item.worldofwonder.stem_chest_boat": "Стебловий човен зі скринею",
+
+  "entity.worldofwonder.stem_chest_boat": "Човен зі скринею",
+  "entity.worldofwonder.dande_lion": "Кульбабовий лев",
+
+  "biome.worldofwonder.dandelion_fields": "Кульбабові поля"
+}
