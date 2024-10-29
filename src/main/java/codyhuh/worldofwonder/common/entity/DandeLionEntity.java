@@ -88,7 +88,6 @@ public class DandeLionEntity extends TamableAnimal {
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, Animal.class, false, entity -> !(entity instanceof DandeLionEntity)));
-
     }
 
     public static AttributeSupplier.Builder registerAttributes() {
@@ -115,12 +114,14 @@ public class DandeLionEntity extends TamableAnimal {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Angry", this.isAngry());
+        compound.putBoolean("Sheared", this.isSheared());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setAngry(compound.getBoolean("Angry"));
+        this.setSheared(compound.getBoolean("Sheared"));
     }
 
     public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
