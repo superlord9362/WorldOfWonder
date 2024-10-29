@@ -39,6 +39,7 @@ public class WonderBiomes {
 
 		MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder();
 		spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(WonderEntityTypes.DANDE_LION.get(), 30, 2, 3));
+		BiomeDefaultFeatures.farmAnimals(spawns);
 		BiomeDefaultFeatures.commonSpawns(spawns);
 		Music music = Musics.createGameMusic(Holder.direct(WonderSounds.MUSIC_BIOME_DANDELION_FIELDS.get()));
 		return biome(true, 0.7F, 0.8F, 7907327, 7578511, 8431984,

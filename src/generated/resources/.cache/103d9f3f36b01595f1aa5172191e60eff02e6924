@@ -1,6 +1,6 @@
-// 1.20.1	2024-06-26T13:00:31.2768532	Registries
+// 1.20.1	2024-10-29T21:55:23.1294518	Registries
 e4e0c363e68d8401fb100d152b347f73b6ae7ff4 data/worldofwonder/blueprint/modded_biome_slices/dandy.json
-519eb953c8bcb9fc534a97b26dee4d66d6534499 data/worldofwonder/worldgen/biome/dandelion_fields.json
+2f74c8b47b993850dbcdfde8b432eb190a8aa0d9 data/worldofwonder/worldgen/biome/dandelion_fields.json
 7535040464763144aa7d177a87fdbe45ec66d785 data/worldofwonder/worldgen/configured_feature/dandelion.json
 1ac7750daef5c657a47554c5e7fd2a7a9178755e data/worldofwonder/worldgen/configured_feature/dandelion_flowers.json
 b9f5b1a4c57150b203ff989720166b60e2901ae3 data/worldofwonder/worldgen/configured_feature/dandelion_fluff.json
