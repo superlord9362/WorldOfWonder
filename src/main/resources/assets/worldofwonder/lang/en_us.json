@@ -26,20 +26,20 @@
   "block.worldofwonder.stem_stairs": "Stem Stairs",
   "block.worldofwonder.stem_bookshelf": "Stem Bookshelf",
   "block.worldofwonder.stem_ladder": "Stem Ladder",
-  "block.worldofwonder.dande_lion_sprout": "Dande-lion Sprout",
+  "block.worldofwonder.dande_lion_sprout": "Dandy Lion Sprout",
   "block.worldofwonder.stem_sign": "Stem Sign",
   "block.worldofwonder.stem_hanging_sign": "Stem Hanging Sign",
   "block.worldofwonder.stem_chest": "Stem Chest",
   "block.worldofwonder.stem_trapped_chest": "Stem Trapped Chest",
 
   "item.worldofwonder.bloom_meal": "Bloom Meal",
-  "item.worldofwonder.dande_lion_spawn_egg": "Dande-lion Spawn Egg",
+  "item.worldofwonder.dande_lion_spawn_egg": "Dandy Lion Spawn Egg",
   "item.worldofwonder.dandelion_hat": "Dandelion Hat",
   "item.worldofwonder.stem_boat": "Stem Boat",
   "item.worldofwonder.stem_chest_boat": "Stem Chest Boat",
 
   "entity.worldofwonder.stem_chest_boat": "Boat with Chest",
-  "entity.worldofwonder.dande_lion": "Dande-lion",
+  "entity.worldofwonder.dande_lion": "Dandy Lion",
 
   "biome.worldofwonder.dandelion_fields": "Dandelion Fields"
 }

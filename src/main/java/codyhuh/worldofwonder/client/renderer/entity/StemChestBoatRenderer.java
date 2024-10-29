@@ -18,12 +18,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.Boat;
 
 public class StemChestBoatRenderer extends BoatRenderer {
-	private final Map<WonderBoatTypes, Pair<ResourceLocation, ListModel<Boat>>> modChestBoatResources;
+    private final Map<WonderBoatTypes, Pair<ResourceLocation, ListModel<Boat>>> modChestBoatResources;
 
     public StemChestBoatRenderer(EntityRendererProvider.Context renderContext, boolean isChestBoot) {
         super(renderContext, isChestBoot);
-
-                modChestBoatResources = Stream.of(WonderBoatTypes.values()).collect(ImmutableMap.toImmutableMap((boatType) -> {
+        modChestBoatResources = Stream.of(WonderBoatTypes.values()).collect(ImmutableMap.toImmutableMap((boatType) -> {
             return boatType;
         }, (boatType) -> {
             return Pair.of(
@@ -44,7 +43,7 @@ public class StemChestBoatRenderer extends BoatRenderer {
 
     @Override
     public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
-    	StemChestBoatEntity moddedBoat = (StemChestBoatEntity) boat;
+        StemChestBoatEntity moddedBoat = (StemChestBoatEntity) boat;
         return modChestBoatResources.get(moddedBoat.getWonderChestBoatType());
     }
 }

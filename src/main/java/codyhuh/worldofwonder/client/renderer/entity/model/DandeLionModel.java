@@ -23,7 +23,7 @@ public class DandeLionModel<T extends DandeLionEntity> extends AgeableHierarchic
 	private final ModelPart earRight;
 
 	public DandeLionModel(ModelPart root) {
-        super(0.5F, -24.0F);
+        super(0.5F, 24.0F);
 		this.body = root.getChild("body");
 		this.head = body.getChild("head");
 		this.earLeft = head.getChild("earLeft");
@@ -69,6 +69,8 @@ public class DandeLionModel<T extends DandeLionEntity> extends AgeableHierarchic
 
     @Override
     public void setupAnim(DandeLionEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        body.getAllParts().forEach(ModelPart::resetPose);
+
         float speed = 1.0f;
         float degree = 1.0f;
 
@@ -95,14 +97,7 @@ public class DandeLionModel<T extends DandeLionEntity> extends AgeableHierarchic
             this.head.y = -5.0F;
 
             this.tail.xRot = 1.0471975511965976F;
-
         } else {
-            if (young) {
-                this.body.y = Mth.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 24.02F;
-            }
-            else {
-                this.body.y = Mth.cos(limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount + 12.02F;
-            }
             this.body.xRot = Mth.cos(-1.0F + limbSwing * speed * 0.4F) * degree * 0.1F * limbSwingAmount;
             this.head.y = Mth.cos(1.0F + limbSwing * speed * 0.4F) * degree * -0.05F * limbSwingAmount - 3.05F;
             this.legRight.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

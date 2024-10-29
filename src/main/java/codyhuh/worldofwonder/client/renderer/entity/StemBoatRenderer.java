@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.Boat;
 
 public class StemBoatRenderer extends BoatRenderer {
-	private final Map<WonderBoatTypes, Pair<ResourceLocation, ListModel<Boat>>> modBoatResources;
+    private final Map<WonderBoatTypes, Pair<ResourceLocation, ListModel<Boat>>> modBoatResources;
 
     public StemBoatRenderer(EntityRendererProvider.Context renderContext, boolean isChestBoot) {
         super(renderContext, isChestBoot);
@@ -26,13 +26,13 @@ public class StemBoatRenderer extends BoatRenderer {
             return boatType;
         }, (boatType) -> {
             return Pair.of(
-                new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/boat/" + boatType.getName() + ".png"),
-                new BoatModel(renderContext.bakeLayer(
-                    new ModelLayerLocation(
-                        new ResourceLocation("boat/oak"),
-                        "main"
-                    )
-                ))
+                    new ResourceLocation(WorldOfWonder.MOD_ID, "textures/entity/boat/" + boatType.getName() + ".png"),
+                    new BoatModel(renderContext.bakeLayer(
+                            new ModelLayerLocation(
+                                    new ResourceLocation("boat/oak"),
+                                    "main"
+                            )
+                    ))
             );
         }));
     }
@@ -40,12 +40,12 @@ public class StemBoatRenderer extends BoatRenderer {
     public StemBoatRenderer(EntityRendererProvider.Context renderContext) {
         this(renderContext, false);
     }
-    
+
     @Override
     public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
-    	StemBoatEntity moddedBoat = (StemBoatEntity) boat;
+        StemBoatEntity moddedBoat = (StemBoatEntity) boat;
         return modBoatResources.get(moddedBoat.getWonderBoatType());
     }
 
-	
+
 }
